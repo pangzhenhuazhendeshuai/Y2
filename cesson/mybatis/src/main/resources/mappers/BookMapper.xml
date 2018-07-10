@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+mybatis的具体的dao对应的配置文件，类似于那个impl
+
+namespace要和我们的dao的接口进行绑定
+-->
+<mapper namespace="com.sz.mapper.BookDao">
+
+
+    <!--CRUD都提供了标准的标签
+        C:create
+        R:retrieve
+        U:update
+        D:delete
+        增删改查
+    -->
+
+    <!--对于select而言，我们要通知mybatis，你帮我封装成我指定的数据类型
+        list集合（如果你要查询的结果是一个集合，你描述集合当中的元素的是java类型就可以了。）
+        如果你要查询的结果就是一个普通的java对象，resultType直接写对应的pojo就可以了。
+    -->
+    <select id="selectAllBook" resultType="com.sz.entity.Book">
+      SELECT * FROM book
+    </select>
+
+    <delete id="deleteBookByPrimayKey">
+      delete from book where id=#{id}
+    </delete>
+
+    <insert id="insertBook" parameterType="com.sz.entity.Book">
+        insert into book(ISBN,name,price,discount,publisher)
+        values (#{ISBN},#{name},#{price},#{discount},#{publisher})
+    </insert>
+
+    <update id="updateBook" parameterType="com.sz.entity.Book">
+        update book set ISBN=#{ISBN},name=#{name},price=#{price},discount=#{discount},publisher=#{publisher}
+        where id=#{id}
+    </update>
+</mapper>

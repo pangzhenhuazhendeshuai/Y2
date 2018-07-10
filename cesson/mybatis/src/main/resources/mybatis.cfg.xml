@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+
+    <!--编写一下配置文件-->
+
+    <!--配置环境们，配置环境
+            生产环境
+            测试环境
+            开发环境
+    -->
+
+    <!--引入外部的属性文件
+           在外的属性文件当中的优先级高于
+           property子节点
+       -->
+    <properties resource="db.properties"/>
+
+    <environments default="dev">
+        <environment id="dev">
+            <transactionManager type="JDBC"/>
+            <!--支持三种类型 UNPOOLED  POOLED  JNDI-->
+            <dataSource type="POOLED">
+                <!--数据库连接的四项基本属性-->
+                <property name="url" value="${url}"/>
+                <property name="driver" value="${driver}"/>
+                <property name="username" value="${user}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="mappers/BookMapper.xml"/>
+    </mappers>
+</configuration>
