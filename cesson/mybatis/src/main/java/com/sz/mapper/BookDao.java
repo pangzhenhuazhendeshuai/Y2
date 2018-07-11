@@ -7,9 +7,11 @@ import java.util.List;
 public interface BookDao {
     List<Book> selectAllBook();
 
-    int deleteBookByPrimayKey(@Param("id") Integer id);
+    int deleteBookByPrimaryKey(@Param("id") Integer id);
 
     int insertBook(Book book);
 
     int updateBook(Book book);
+
+    List<Book> selectBookByIdAndName(Book book);
 }
