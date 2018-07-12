@@ -1,14 +1,12 @@
 package com.sz;
 
-import com.sz.entity.Book;
-import com.sz.mapper.BookDao;
-import org.apache.ibatis.io.Resources;
+import com.sz.entity.BookInfo;
+import com.sz.entity.Person;
+import com.sz.mapper.BookMapper;
+import com.sz.mapper.PersonMapper;
+import com.sz.util.MybatisUtil;
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Test;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -16,63 +14,51 @@ import java.util.List;
  */
 public class AppTest 
 {
+    /**
+     * 查询所有图书信息
+     */
     @Test
     public void selectAllBook(){
-        //1.定义mybatis配置文件的位置
-        String resource = "mybatis.cfg.xml";
-        // 2 通过mybatis的工具类加载这个文件为输入流
-        InputStream is = null;
-        SqlSessionFactory sessionFactory = null;
         SqlSession sqlSession = null;
         try {
-            is = Resources.getResourceAsStream(resource);
-            // 3 创建一个会话工厂  会话工厂的建造者（一次性用品）
-            sessionFactory = new SqlSessionFactoryBuilder().build(is);
             // 4 利用工厂生产会话
-            sqlSession = sessionFactory.openSession();
+            sqlSession = MybatisUtil.openSession();
             // 5 使用会话进行相关的操作
             // 得到一个Mapper，mybatis本身通过动态代理帮我们去创建实例
-            BookDao mapper=sqlSession.getMapper(BookDao.class);
-            List<Book> books = mapper.selectAllBook();
-            System.out.println(books);
+            BookMapper mapper=sqlSession.getMapper(BookMapper.class);
+            List<BookInfo> bookInfos = mapper.selectAllBook();
+            System.out.println(bookInfos);
             sqlSession.commit();
-        }catch (IOException e){
+        }catch (Exception e){
             sqlSession.rollback();
             e.printStackTrace();
         }finally {
-            sqlSession.close();
+            MybatisUtil.closeSession(sqlSession);
         }
     }
 
-
-
+    /**
+     * 根据ID或图书名查询图书信息
+     */
     @Test
     public void selectBookByIdAndName(){
-        //1.定义mybatis配置文件的位置
-        String resource = "mybatis.cfg.xml";
-        // 2 通过mybatis的工具类加载这个文件为输入流
-        InputStream is = null;
-        SqlSessionFactory sessionFactory = null;
         SqlSession sqlSession = null;
         try {
-            is = Resources.getResourceAsStream(resource);
-            // 3 创建一个会话工厂  会话工厂的建造者（一次性用品）
-            sessionFactory = new SqlSessionFactoryBuilder().build(is);
             // 4 利用工厂生产会话
-            sqlSession = sessionFactory.openSession();
+            sqlSession = MybatisUtil.openSession();
             // 5 使用会话进行相关的操作
             // 得到一个Mapper，mybatis本身通过动态代理帮我们去创建实例
-            BookDao mapper = sqlSession.getMapper(BookDao.class);
-            Book book = new Book();
-            book.setId(1);
-            book.setName(null);
-            List<Book> books = mapper.selectBookByIdAndName(book);
+            BookMapper mapper = sqlSession.getMapper(BookMapper.class);
+            BookInfo bookInfo = new BookInfo();
+            bookInfo.setId(1);
+            bookInfo.setName(null);
+            List<BookInfo> books = mapper.selectBookByIdAndName(bookInfo);
             if(books.size() <= 0){
                 System.out.println("没有查询到该用户的信息哦，请联系管理员或稍后再试！！！");
             }else{
                 System.out.println(books);
             }
-        }catch (IOException e){
+        }catch (Exception e){
             e.printStackTrace();
         }finally {
             if(sqlSession != null)
@@ -80,27 +66,22 @@ public class AppTest
         }
     }
 
+    /**
+     * 删除图书信息
+     */
     @Test
     public void deleteBook(){
-        //1.定义mybatis配置文件的位置
-        String resource = "mybatis.cfg.xml";
-        // 2 通过mybatis的工具类加载这个文件为输入流
-        InputStream is = null;
-        SqlSessionFactory sessionFactory = null;
         SqlSession sqlSession = null;
         try {
-            is = Resources.getResourceAsStream(resource);
-            // 3 创建一个会话工厂  会话工厂的建造者（一次性用品）
-            sessionFactory = new SqlSessionFactoryBuilder().build(is);
             // 4 利用工厂生产会话
-            sqlSession = sessionFactory.openSession();
+            sqlSession = MybatisUtil.openSession();
             // 5 使用会话进行相关的操作
             // 得到一个Mapper，mybatis本身通过动态代理帮我们去创建实例
-            BookDao mapper = sqlSession.getMapper(BookDao.class);
+            BookMapper mapper = sqlSession.getMapper(BookMapper.class);
             int row = mapper.deleteBookByPrimaryKey(1);
             System.out.println("影响行数:"+row);
             sqlSession.commit();
-        }catch (IOException e){
+        }catch (Exception e){
             sqlSession.rollback();
             e.printStackTrace();
         }finally {
@@ -108,34 +89,28 @@ public class AppTest
         }
     }
 
-
+    /**
+     * 新增图书信息
+     */
     @Test
     public void insertBook(){
-        //1.定义mybatis配置文件的位置
-        String resource = "mybatis.cfg.xml";
-        // 2 通过mybatis的工具类加载这个文件为输入流
-        InputStream is = null;
-        SqlSessionFactory sessionFactory = null;
         SqlSession sqlSession = null;
         try {
-            is = Resources.getResourceAsStream(resource);
-            // 3 创建一个会话工厂  会话工厂的建造者（一次性用品）
-            sessionFactory = new SqlSessionFactoryBuilder().build(is);
             // 4 利用工厂生产会话
-            sqlSession = sessionFactory.openSession();
+            sqlSession = MybatisUtil.openSession();
             // 5 使用会话进行相关的操作
             // 得到一个Mapper，mybatis本身通过动态代理帮我们去创建实例
-            BookDao mapper = sqlSession.getMapper(BookDao.class);
-            Book book = new Book();
-            book.setISBN("BILL2016_004");
-            book.setName("Javaoop");
-            book.setPrice(125.00);
+            BookMapper mapper = sqlSession.getMapper(BookMapper.class);
+            BookInfo bookInfo = new BookInfo();
+            bookInfo.setISBN(201807123);
+            bookInfo.setName("Javaoop");
+            bookInfo.setPrice(125.00);
             //book.setDiscount(1);
             //book.setPublisher("电子工业出版社");
-            int row = mapper.insertBook(book);
+            int row = mapper.insertBook(bookInfo);
             System.out.println("影响行数:" + row);
             sqlSession.commit();
-        }catch (IOException e){
+        }catch (Exception e){
             sqlSession.rollback();
             e.printStackTrace();
         }finally {
@@ -143,42 +118,82 @@ public class AppTest
         }
     }
 
+    /**
+     * 修改图书信息
+     */
     @Test
     public void updateBook(){
-        //1.定义mybatis配置文件的位置
-        String resource = "mybatis.cfg.xml";
-        // 2 通过mybatis的工具类加载这个文件为输入流
-        InputStream is = null;
-        SqlSessionFactory sessionFactory = null;
         SqlSession sqlSession = null;
         try {
-            is = Resources.getResourceAsStream(resource);
-            // 3 创建一个会话工厂  会话工厂的建造者（一次性用品）
-            sessionFactory = new SqlSessionFactoryBuilder().build(is);
             // 4 利用工厂生产会话
-            sqlSession = sessionFactory.openSession();
+            sqlSession = MybatisUtil.openSession();
             // 5 使用会话进行相关的操作
             // 得到一个Mapper，mybatis本身通过动态代理帮我们去创建实例
-            BookDao mapper = sqlSession.getMapper(BookDao.class);
-            Book book = new Book();
-            book.setId(2);
-            book.setISBN("BILL2016_004");
-            book.setName("Java");
-            book.setPrice(125.00);
-            book.setDiscount(1);
-            book.setPublisher("电子工业出版社");
-            if(book.getId() != null){
-                int row = mapper.updateBook(book);
+            BookMapper mapper = sqlSession.getMapper(BookMapper.class);
+            BookInfo bookInfo = new BookInfo();
+            bookInfo.setId(2);
+            bookInfo.setISBN(201806123);
+            bookInfo.setName("Java");
+            bookInfo.setPrice(125.00);
+            bookInfo.setDiscount(1);
+            bookInfo.setPublisher("电子工业出版社");
+            if(bookInfo.getId() != null){
+                int row = mapper.updateBook(bookInfo);
                 System.out.println("影响行数:" + row);
             }else{
                 System.out.println("修改失败，请联系管理员或稍后再试!!!");
             }
             sqlSession.commit();
-        }catch (IOException e){
+        }catch (Exception e){
             sqlSession.rollback();
             e.printStackTrace();
         }finally {
             sqlSession.close();
         }
     }
+
+    /**
+     *查询作者信息顺便把图书信息也查询出来
+     */
+    @Test
+    public void selectBookInfoAndPerson(){
+        SqlSession sqlSession = null;
+        try {
+            // 4 利用工厂生产会话
+            sqlSession = MybatisUtil.openSession();
+            // 5 使用会话进行相关的操作
+            // 得到一个Mapper，mybatis本身通过动态代理帮我们去创建实例
+            BookMapper mapper = sqlSession.getMapper(BookMapper.class);
+            List<BookInfo> bookInfos = mapper.selectBookById(1);
+            System.out.println(bookInfos);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            MybatisUtil.closeSession(sqlSession);
+        }
+    }
+
+    /**
+     * 根据图书查询出对应的作者
+     */
+    @Test
+    public void selectPersonInfoByBookId(){
+        SqlSession sqlSession = null;
+        try {
+            // 4 利用工厂生产会话
+            sqlSession = MybatisUtil.openSession();
+            // 5 使用会话进行相关的操作
+            // 得到一个Mapper，mybatis本身通过动态代理帮我们去创建实例
+            PersonMapper mapper = sqlSession.getMapper(PersonMapper.class);
+            List<Person> personList = mapper.selectPersonById(1);
+            System.out.println(personList);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            MybatisUtil.closeSession(sqlSession);
+        }
+    }
+
+
+
 }

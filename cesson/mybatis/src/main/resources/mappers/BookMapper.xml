@@ -8,8 +8,8 @@ mybatis的具体的dao对应的配置文件，类似于那个impl
 
 namespace要和我们的dao的接口进行绑定
 -->
-<!--suppress SqlNoDataSourceInspection -->
-<mapper namespace="com.sz.mapper.BookDao">
+<!--suppress ALL -->
+<mapper namespace="com.sz.mapper.BookMapper">
 
 
     <!--CRUD都提供了标准的标签
@@ -24,12 +24,12 @@ namespace要和我们的dao的接口进行绑定
         list集合（如果你要查询的结果是一个集合，你描述集合当中的元素的是java类型就可以了。）
         如果你要查询的结果就是一个普通的java对象，resultType直接写对应的pojo就可以了。
     -->
-    <select id="selectAllBook" resultType="com.sz.entity.Book">
-        SELECT * FROM book
+    <select id="selectAllBook" resultType="com.sz.entity.BookInfo">
+        SELECT * FROM bookinfo
     </select>
 
-    <select id="selectBookByIdAndName" resultType="com.sz.entity.Book">
-        SELECT * FROM book
+    <select id="selectBookByIdAndName" resultType="com.sz.entity.BookInfo">
+        SELECT * FROM bookinfo
         <if test="id != null">
             <where>
                 id=#{id}
@@ -39,13 +39,13 @@ namespace要和我们的dao的接口进行绑定
 
     <delete id="deleteBookByPrimaryKey">
       <if test="id != null">
-          delete from book where id=#{id}
+          delete from bookinfo where id=#{id}
       </if>
     </delete>
 
     <!--suppress SqlNoDataSourceInspection -->
-    <insert id="insertBook" parameterType="com.sz.entity.Book">
-        insert into book
+    <insert id="insertBook" parameterType="com.sz.entity.BookInfo">
+        insert into bookinfo
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="ISBN != null">
                 ISBN,
@@ -82,8 +82,8 @@ namespace要和我们的dao的接口进行绑定
         </trim>
     </insert>
 
-    <update id="updateBook" parameterType="com.sz.entity.Book">
-        update book set
+    <update id="updateBook" parameterType="com.sz.entity.BookInfo">
+        update bookinfo set
         <trim suffixOverrides=",">
             <if test="ISBN != null">
                 ISBN=#{ISBN},
@@ -102,7 +102,30 @@ namespace要和我们的dao的接口进行绑定
             </if>
         </trim>
         <where>
-            id=#{id}
+            and id=#{id}
         </where>
     </update>
+
+    <resultMap id="bookInfoById" type="com.sz.entity.BookInfo">
+        <id property="id" column="id"/>
+        <result property="ISBN" column="ISBN"/>
+        <result property="name" column="name"/>
+        <result property="price" column="price"/>
+        <result property="discount" column="discount"/>
+        <result property="publisher" column="publisher"/>
+
+        <collection property="personList" ofType="com.sz.entity.Person">
+            <id property="person_id" column="person_id"/>
+            <result property="person_name" column="person_name"/>
+            <result property="person_number" column="person_number"/>
+        </collection>
+    </resultMap>
+
+    <!--1 to n查询-->
+    <select id="selectBookById" resultMap="bookInfoById">
+        SELECT t2.id,t2.ISBN,t2.name,t2.price,t2.discount,t2.publisher,t1.person_name,t1.person_number
+        FROM `person` t1 LEFT JOIN `bookinfo` t2 ON t1.person_id = t2.person_id
+        WHERE t1.person_id = #{id}
+    </select>
+
 </mapper>
