@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.smbms.dao.provider.ProviderMapper">
+    <resultMap id="baseProvider" type="cn.smbms.pojo.Provider">
+        <id property="id" column="id"/>
+        <result property="proCode" column="proCode"/>
+        <result property="proName" column="proName"/>
+        <result property="proDesc" column="proDesc"/>
+        <result property="proContact" column="proContact"/>
+        <result property="proPhone" column="proPhone"/>
+        <result property="proAddress" column="proAddress"/>
+        <result property="proFax" column="proFax"/>
+        <result property="createdBy" column="createdBy"/>
+        <result property="creationDate" column="creationDate"/>
+        <result property="modifyBy" column="modifyBy"/>
+        <result property="modifyDate" column="modifyDate"/>
+    </resultMap>
+
+    <!--查询供应商列表-->
+    <select id="getProviderList" resultMap="baseProvider">
+        SELECT * FROM smbms_provider
+        <where>
+            <if test="proName != null and proName != ''">
+                AND proName LIKE CONCAT('%',#{proName},'%')
+            </if>
+            <if test="proCode != null and proCode != ''">
+                AND proCode LIKE CONCAT('%',#{proCode},'%')
+            </if>
+        </where>
+    </select>
+
+    <!--新增商品供应商信息-->
+    <insert id="add">
+        INSERT INTO `smbms_provider`
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="proCode != null">
+                proCode,
+            </if>
+            <if test="proName != null">
+                proName,
+            </if>
+            <if test="proDesc != null">
+                proDesc,
+            </if>
+            <if test="proContact != null">
+                proContact,
+            </if>
+            <if test="proPhone != null">
+                proPhone,
+            </if>
+            <if test="proAddress != null">
+                proAddress,
+            </if>
+            <if test="proFax != null">
+                proFax,
+            </if>
+            <if test="createdBy != null">
+                createdBy,
+            </if>
+            <if test="creationDate != null">
+                creationDate,
+            </if>
+            <if test="modifyDate != null">
+                modifyDate,
+            </if>
+            <if test="modifyBy != null">
+                modifyBy,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="proCode != null">
+                #{proCode},
+            </if>
+            <if test="proName != null">
+                #{proName},
+            </if>
+            <if test="proDesc != null">
+                #{proDesc},
+            </if>
+            <if test="proContact != null">
+                #{proContact},
+            </if>
+            <if test="proPhone != null">
+                #{proPhone},
+            </if>
+            <if test="proAddress != null">
+                #{proAddress},
+            </if>
+            <if test="proFax != null">
+                #{proFax},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy},
+            </if>
+            <if test="creationDate != null">
+                #{creationDate},
+            </if>
+            <if test="modifyDate != null">
+                #{modifyDate},
+            </if>
+            <if test="modifyBy != null">
+                #{modifyBy},
+            </if>
+        </trim>
+    </insert>
+
+    <!--根据ID删除供应商信息(PS:必须要保证该供应商在订单表中没有存在数据信息)-->
+    <delete id="deleteProviderById">
+        DELETE FROM smbms_provider
+        <where>
+            id=#{delId}
+        </where>
+    </delete>
+
+    <!--通过proId获取Provider-->
+    <select id="getProviderById" resultMap="baseProvider">
+        SELECT * FROM smbms_provider
+        <where>
+            id=#{id}
+        </where>
+    </select>
+
+    <!--修改供应商信息-->
+    <update id="modify">
+        update smbms_provider
+        <set>
+            <if test="proName != null">
+                `proName` = #{proName},
+            </if>
+            <if test="proDesc != null">
+                `proDesc` = #{proDesc},
+            </if>
+            <if test="proContact != null">
+                `proContact` = #{proContact},
+            </if>
+            <if test="proPhone != null">
+                `proPhone` = #{proPhone},
+            </if>
+            <if test="proAddress != null">
+                `proAddress` = #{proAddress},
+            </if>
+            <if test="proFax != null">
+                `proFax` = #{proFax},
+            </if>
+            <if test="modifyBy != null">
+                `modifyBy` = #{modifyBy},
+            </if>
+            <if test="modifyDate != null">
+                `modifyDate` = #{modifyDate},
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+</mapper>
