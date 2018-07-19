@@ -17,15 +17,23 @@ public class Bill {
 	private Date creationDate; //创建时间
 	private Integer modifyBy; //更新者
 	private Date modifyDate;//更新时间
-	
-	private String providerName;//供应商名称
-	
-	
-	public String getProviderName() {
-		return providerName;
+	private Provider provider;
+	private String proName;//供应商名称
+
+	public String getProName() {
+		return proName;
 	}
-	public void setProviderName(String providerName) {
-		this.providerName = providerName;
+
+	public void setProName(String proName) {
+		this.proName = proName;
+	}
+
+	public Provider getProvider() {
+		return provider;
+	}
+
+	public void setProvider(Provider provider) {
+		this.provider = provider;
 	}
 	public Integer getId() {
 		return id;

@@ -185,9 +185,8 @@ INSERT  INTO `smbms_user`(`id`,`userCode`,`userName`,`userPassword`,`gender`,`bi
 (14,'yangguo','杨过','0000000',2,'1980-01-01','13388886623','北京市朝阳区北苑家园茉莉园20号楼',3,1,'2015-02-01 03:52:07',NULL,NULL),
 (15,'zhaomin','赵敏','0000000',1,'1987-12-04','18099897657','北京市昌平区天通苑3区12号楼',2,1,'2015-09-12 12:02:12',NULL,NULL);
 
-SELECT * FROM `smbms_user` t1 ,`smbms_role` t2 WHERE t1.userRole = t2.id AND t1.id=5
-
-SELECT * FROM smbms_bill
+SELECT * FROM smbms_bill;
+SELECT * FROM smbms_role;
 
 
 

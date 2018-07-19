@@ -2,11 +2,147 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--suppress SqlNoDataSourceInspection, SqlDialectInspection -->
 <mapper namespace="cn.smbms.dao.bill.BillMapper">
+
+    <resultMap id="baseBill" type="cn.smbms.pojo.Bill">
+        <id property="id" column="id"/>
+        <result property="billCode" column="billCode"/>
+        <result property="productName" column="productName"/>
+        <result property="productDesc" column="productDesc"/>
+        <result property="productUnit" column="productUnit"/>
+        <result property="productCount" column="productCount"/>
+        <result property="totalPrice" column="totalPrice"/>
+        <result property="isPayment" column="isPayment"/>
+        <result property="createdBy" column="createdBy"/>
+        <result property="creationDate" column="creationDate"/>
+        <result property="modifyBy" column="modifyBy"/>
+        <result property="modifyDate" column="modifyDate"/>
+    </resultMap>
+    
+    <resultMap id="Provider" type="cn.smbms.pojo.Bill" extends="baseBill">
+        <association property="provider" javaType="cn.smbms.pojo.Provider">
+            <result property="proName" column="proName"/>
+        </association>
+    </resultMap>
+
+    <!--获取订单总记录数-->
     <select id="getBillCountByProviderId" resultType="int">
         SELECT COUNT(1) FROM smbms_bill
         <where>
             providerId=#{providerId}
         </where>
     </select>
+
+    <!--查询所有订单表信息-->
+    <select id="getBillList" resultMap="baseBill">
+        SELECT t1.*,t2.id,t2.proName
+        FROM smbms_bill t1,smbms_provider t2
+        <where>
+            AND t1.providerId = t2.id
+            AND t1.productName LIKE CONCAT('%',#{productName},'%')
+        </where>
+    </select>
+
+    <!--根据ID获取订单信息-->
+    <select id="getBillById" resultMap="baseBill">
+        SELECT t1.*,t2.id,t2.proName
+        FROM smbms_bill t1,smbms_provider t2
+        <where>
+            AND t1.providerId = t2.id
+            AND t1.id=#{id}
+        </where>
+    </select>
+
+    <!--根据ID修改订单信息-->
+    <update id="modify">
+        UPDATE smbms_bill
+        <set>
+            <if test="billCode != null">
+                billCode=#{billCode},
+            </if>
+            <if test="productName != null">
+                productName=#{productName},
+            </if>
+            <if test="productUnit != null">
+                productUnit=#{productUnit},
+            </if>
+            <if test="productCount != null">
+                productCount=#{productCount},
+            </if>
+            <if test="totalPrice != null">
+                totalPrice=#{totalPrice},
+            </if>
+            <if test="providerId != null">
+                providerId=#{providerId},
+            </if>
+            <if test="isPayment != null">
+                isPayment=#{isPayment},
+            </if>
+        </set>
+        <where>
+            <if test="id != null">
+                id=#{id}
+            </if>
+        </where>
+    </update>
+
+    <!--根据ID删除订单信息-->
+    <delete id="deleteBillById">
+        DELETE FROM smbms_bill
+        <where>
+            id=#{id}
+        </where>
+    </delete>
+
+    <!--新增顶订单信息-->
+    <insert id="add">
+        INSERT INTO smbms_bill
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="billCode != null">
+                billCode,
+            </if>
+            <if test="productName != null">
+                productName,
+            </if>
+            <if test="productUnit != null">
+                productUnit,
+            </if>
+            <if test="productCount != null">
+                productCount,
+            </if>
+            <if test="totalPrice != null">
+                totalPrice,
+            </if>
+            <if test="providerId != null">
+                providerId,
+            </if>
+            <if test="isPayment != null">
+                isPayment,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="billCode != null">
+                #{billCode},
+            </if>
+            <if test="productName != null">
+                #{productName},
+            </if>
+            <if test="productUnit != null">
+                #{productUnit},
+            </if>
+            <if test="productCount != null">
+                #{productCount},
+            </if>
+            <if test="totalPrice != null">
+                #{totalPrice},
+            </if>
+            <if test="providerId != null">
+                #{providerId},
+            </if>
+            <if test="isPayment != null">
+                #{isPayment},
+            </if>
+        </trim>
+    </insert>
 </mapper>

@@ -14,98 +14,121 @@ public class BillServiceImpl implements BillService {
 	public BillServiceImpl(){
 		billDao = sqlSession.getMapper(BillMapper.class);
 	}
+
+	/**
+	 * 新增订单信息
+	 * @param bill
+	 * @return
+	 */
 	@Override
 	public boolean add(Bill bill) {
-		// TODO Auto-generated method stub
 		boolean flag = false;
 		try {
-			if(billDao.add(bill) > 0)
+			if(billDao.add(bill) > 0){
 				flag = true;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			try {
-				System.out.println("rollback==================");
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				sqlSession.commit();
 			}
+		} catch (Exception e) {
+			flag=false;
+			sqlSession.rollback();
+			e.printStackTrace();
 		}finally{
+			if(sqlSession != null){
+				sqlSession.close();
+			}
 		}
 		return flag;
 	}
 
+	/**
+	 * 获取所有订单信息
+	 * @param bill
+	 * @return
+	 */
 	@Override
 	public List<Bill> getBillList(Bill bill) {
-		// TODO Auto-generated method stub
-		Connection connection = null;
 		List<Bill> billList = null;
 		System.out.println("query productName ---- > " + bill.getProductName());
 		System.out.println("query providerId ---- > " + bill.getProviderId());
 		System.out.println("query isPayment ---- > " + bill.getIsPayment());
-		
 		try {
-			connection = BaseDao.getConnection();
 			billList = billDao.getBillList(bill);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
-			BaseDao.closeResource(connection, null, null);
+			if(sqlSession != null)
+				sqlSession.close();
 		}
 		return billList;
 	}
 
+	/**
+	 * 根据ID删除订单信息
+	 * @param delId
+	 * @return
+	 */
 	@Override
 	public boolean deleteBillById(String delId) {
-		// TODO Auto-generated method stub
-		Connection connection = null;
 		boolean flag = false;
 		try {
-			connection = BaseDao.getConnection();
-			if(billDao.deleteBillById(delId) > 0)
+			if(billDao.deleteBillById(delId) > 0){
 				flag = true;
+				sqlSession.commit();
+			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			flag = false;
+			sqlSession.rollback();
 			e.printStackTrace();
 		}finally{
-			BaseDao.closeResource(connection, null, null);
+			if(sqlSession != null){
+				sqlSession.close();
+			}
 		}
 		return flag;
 	}
 
+	/**
+	 * 根据ID获取订单信息
+	 * @param id
+	 * @return
+	 */
 	@Override
 	public Bill getBillById(String id) {
-		// TODO Auto-generated method stub
 		Bill bill = null;
-		Connection connection = null;
 		try{
-			connection = BaseDao.getConnection();
 			bill = billDao.getBillById(id);
 		}catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 			bill = null;
 		}finally{
-			BaseDao.closeResource(connection, null, null);
+			if(sqlSession != null){
+				sqlSession.close();
+			}
 		}
 		return bill;
 	}
 
+	/**
+	 * 根据ID修改订单信息
+	 * @param bill
+	 * @return
+	 */
 	@Override
 	public boolean modify(Bill bill) {
-		// TODO Auto-generated method stub
-		Connection connection = null;
 		boolean flag = false;
 		try {
-			connection = BaseDao.getConnection();
-			if(billDao.modify(bill) > 0)
+			if(billDao.modify(bill) > 0){
 				flag = true;
+				sqlSession.commit();
+			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			flag = false;
+			sqlSession.rollback();
 			e.printStackTrace();
 		}finally{
-
+			if(sqlSession != null){
+				sqlSession.close();
+			}
 		}
 		return flag;
 	}

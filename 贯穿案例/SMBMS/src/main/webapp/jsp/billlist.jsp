@@ -55,7 +55,7 @@
 					<span>${bill.productName }</span>
 					</td>
 					<td>
-					<span>${bill.providerName}</span>
+					<span>${bill.proName}</span>
 					</td>
 					<td>
 					<span>${bill.totalPrice}</span>

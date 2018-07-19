@@ -14,7 +14,6 @@ public interface ProviderMapper {
 	 */
 	int add(Provider provider);
 
-
 	/**
 	 * 通过供应商名称、编码获取供应商列表-模糊查询-providerList
 	 * @param proName
@@ -30,8 +29,7 @@ public interface ProviderMapper {
 	 * @throws Exception
 	 */
 	int deleteProviderById(String delId);
-	
-	
+
 	/**
 	 * 通过proId获取Provider
 	 * @param id
@@ -46,6 +44,5 @@ public interface ProviderMapper {
 	 * @throws Exception
 	 */
 	int modify(Provider provider);
-	
-	
+
 }

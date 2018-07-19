@@ -13,7 +13,6 @@ public interface BillMapper {
      */
     int add(Bill bill);
 
-
     /**
      * 通过查询条件获取供应商列表-模糊查询-getBillList
      * @param bill
@@ -29,7 +28,6 @@ public interface BillMapper {
      * @throws Exception
      */
     int deleteBillById(String delId);
-
 
     /**
      * 通过billId获取Bill

@@ -48,8 +48,7 @@ public interface UserMapper {
 	 * @throws Exception
 	 */
 	int deleteUserById(@Param("delId") Integer delId);
-	
-	
+
 	/**
 	 * 通过userId获取user
 	 * @param id
@@ -65,8 +64,7 @@ public interface UserMapper {
 	 * @throws Exception
 	 */
 	int modify(User user);
-	
-	
+
 	/**
 	 * 修改当前用户密码
 	 * @param id
@@ -76,8 +74,12 @@ public interface UserMapper {
 	 */
 	int updatePwd(int id, String pwd);
 
-
+	/**
+	 * 登录
+	 * @param userCode
+	 * @param userPassword
+	 * @return
+	 */
 	User queryUserByUserNameAndPassword(@Param("userCode") String userCode, @Param("userPassword")	String userPassword);
-
 
 }
