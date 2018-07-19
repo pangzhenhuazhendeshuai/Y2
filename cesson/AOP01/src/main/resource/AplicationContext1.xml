@@ -1,0 +1,159 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!--&lt;!&ndash;Dao实现类&ndash;&gt;-->
+    <!--<bean id="dao3" class="com.dao.impl.UserDaoImpl"></bean>-->
+    <!--&lt;!&ndash;业务层实现类&ndash;&gt;-->
+    <!--<bean id="service3" class="com.service.impl.UserServiceImpl">-->
+    <!--<property name="dao" ref="dao3"></property>-->
+    <!--</bean>-->
+
+    <context:component-scan base-package="com"></context:component-scan>
+
+
+    <!--测试是否赋值成功-->
+    <bean id="user" class="com.entity.User" name="user2,user3">
+        <!--<property name="id" value="9"/>-->
+        <!--<property name="email" value="1043479603@qq.com"/>-->
+        <!--<property name="password" value="123456"/>-->
+        <!--<property name="username" value="陈冠希"/>-->
+        <constructor-arg name="id" value="10"/>
+        <constructor-arg name="email" value="kkkkk@QQ.com"/>
+        <constructor-arg name="password" value="252525"/>
+        <constructor-arg name="username" value="张欣彤"/>
+    </bean>
+
+    <!--测试是否赋值成功-->
+    <bean id="userTestP" class="com.entity.User" p:id="900" p:email="1042379603@qq.com" p:username="谢霆锋"
+          p:password="777777777777"/>
+
+    <!--测试是否赋值成功-->
+    <bean id="userTestC" class="com.entity.User" c:id="800" c:email="kkkkk@qq.com" c:username="李亚鹏"
+          c:password="878787878"/>
+
+    <!--测试是否赋值成功-->
+    <bean id="constructorTest" class="com.entity.User">
+        <constructor-arg name="id" value="654321"/>
+        <constructor-arg name="email" value="douwei@qq.com"/>
+        <constructor-arg name="username" value="窦唯"/>
+        <constructor-arg name="password" value="8978765782"/>
+    </bean>
+
+    <!--&lt;!&ndash;各种数据类型测试&ndash;&gt;-->
+    <!--<bean id="testEntity" class="com.entity.TestEntity">-->
+    <!--<property name="specialCharacter1">-->
+    <!--<value><![CDATA[你好&&&&&&&&&<,"><,'">?/<>]{/?]]></value>-->
+    <!--</property>-->
+    <!--<property name="specialCharacter2">-->
+    <!--<value><![CDATA[副书记客户$*&^$#@!)(*&%$@!$#%)(>?<":}{|<>?接无人机]]></value>-->
+    <!--</property>-->
+
+    <!--<property name="innerBean">-->
+    <!--<bean id="userChli" class="com.entity.User">-->
+    <!--<property name="username" value="乘龙"/>-->
+    <!--</bean>-->
+    <!--</property>-->
+
+    <!--<property name="list">-->
+    <!--<list>-->
+    <!--<value>结完婚</value>-->
+    <!--<value>反倒是</value>-->
+    <!--<value>健康辅导书</value>-->
+    <!--</list>-->
+    <!--</property>-->
+
+    <!--<property name="array">-->
+    <!--<list>-->
+    <!--<value>第一个数组元素也没啥</value>-->
+    <!--</list>-->
+    <!--</property>-->
+
+    <!--<property name="map">-->
+    <!--<map>-->
+    <!--<entry>-->
+    <!--<key>-->
+    <!--<value>one1</value>-->
+    <!--</key>-->
+    <!--<value>内容一</value>-->
+    <!--</entry>-->
+    <!--<entry>-->
+    <!--<key>-->
+    <!--<value>one2</value>-->
+    <!--</key>-->
+    <!--<value>内容2</value>-->
+    <!--</entry>-->
+    <!--<entry>-->
+    <!--<key>-->
+    <!--<value>one3</value>-->
+    <!--</key>-->
+    <!--<value>内容3</value>-->
+    <!--</entry>-->
+    <!--</map>-->
+    <!--</property>-->
+    <!--<property name="emptyValue">-->
+    <!--<value></value>-->
+    <!--</property>-->
+    <!--<property name="nullValue">-->
+    <!--<null></null>-->
+    <!--</property>-->
+
+    <!--<property name="set">-->
+    <!--<set>-->
+    <!--<value>朗秋</value>-->
+    <!--<value>足球员</value>-->
+    <!--<value>积分</value>-->
+    <!--</set>-->
+    <!--</property>-->
+    <!--<property name="props">-->
+    <!--<props>-->
+    <!--<prop key="kkk">九分裤里上机</prop>-->
+    <!--<prop key="lll">计算机课</prop>-->
+    <!--</props>-->
+    <!--</property>-->
+
+    <!--</bean>-->
+
+    <!--各种数据类型赋值操作-->
+    <bean id="testEntity" class="com.entity.TestEntity">
+        <property name="specialCharacter1">
+            <value><![CDATA[很多事是>:<":<?":{}+_)(*&^%$#@!<?>"::{)**(&*&%@#@|"l'特殊字符]]></value>
+        </property>
+        <property name="specialCharacter2">
+            <value><![CDATA[钛合金客户）（（***……%￥#！@#%……*……*））*……￥@！？》《：“}{特殊字符]]></value>
+        </property>
+        <property name="innerBean">
+            <bean class="com.entity.User" p:username="内部类出来啦"/>
+        </property>
+        <property name="list">
+            <list>
+                <value>集合1</value>
+                <value>集合2</value>
+                <value>集合3</value>
+            </list>
+        </property>
+        <property name="array">
+            <array>
+                <value></value>
+            </array>
+        </property>
+
+    </bean>
+
+</beans>
